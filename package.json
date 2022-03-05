@@ -1,0 +1,20 @@
+{
+  "name": "api_rest_mongodb",
+  "version": "1.0.0",
+  "description": "API básica con Node y Express. Devuelve endpoints para los métodos GET, POST, PATCH y DELETE.",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marcelo Bettini",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
