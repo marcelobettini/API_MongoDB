@@ -1,6 +1,9 @@
 const User = require("./usersModel");
 const bcrypt = require("bcrypt")
 const saltRounds = 10;
+const jwt = require("jsonwebtoken");
+const { response } = require("express");
+const { decode } = require("jsonwebtoken");
 
 
 //GET ALL USERS
@@ -82,12 +85,48 @@ const deleteUser = async (req, res, next) => {
 //LOGIN USER
 const loginUser = async (req, res, next) => {
   const user = await User.find().where({ userName: req.body.userName })
+
+  if (!user.length) {
+    return res.status(401).json({ access: "rejected" })
+  }
   const hashedPassword = user[0].password;
   const match = await bcrypt.compare(req.body.password, hashedPassword)
-  match ? res.json({ access: "granted" }) : res.status(401).json({ access: "rejected" });
+  //así estará antes de usar auth con JWT... solo comprobará login correcto
+  // match ? res.json({ access: "granted" }) : res.status(401).json({ access: "rejected" });
   //no damos info sobre el campo del error, para darle más trabajo a los hackers, por eso
-  // suele verse "usuario O contraseña incorrectos en vez de dar más precisiones"
+  // suele verse "usuario o contraseña incorrectos" en vez de dar más precisiones
+
+  //Aquí entra JWT auth
+  if (!match) {
+    return res.status(401).json({ access: "rejected" })
+  }
+  const accessToken = generateAccessToken(user[0])
+  res.status(200).send({ accessToken, user: user[0].userName, access: "granted with Token" })
+
 }
+
+const generateAccessToken = (user) => {
+  const userForToken = {
+    userName: user.userName,
+    id: user.id
+  }
+  return jwt.sign(userForToken, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+}
+
+const verifyAccessToken = (req, res, next) => {
+  const token = req.headers.authorization
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) return res.status(401).json({ access: "rejected- invalid token" })
+      req.decoded = decoded;
+      next()
+    })
+  } else {
+    res.status(401).json({ message: "no token provided" })
+  }
+}
+
 
 module.exports = {
   getAllUsers,
@@ -95,5 +134,6 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
-  loginUser
+  loginUser,
+  verifyAccessToken
 };

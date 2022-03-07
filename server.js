@@ -2,6 +2,7 @@ require("./config/db");
 const express = require("express");
 const PORT = process.env.PORT || 3000;
 const usersRouter = require("./users/usersRouter");
+require("dotenv").config()
 
 const server = express();
 server.use(express.json());

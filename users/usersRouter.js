@@ -6,10 +6,11 @@ const {
   updateUser,
   deleteUser,
   createUser,
-  loginUser
+  loginUser,
+  verifyAccessToken
 } = require("./usersController");
 
-router.get("/", getAllUsers);
+router.get("/", verifyAccessToken, getAllUsers);
 router.get("/:id", getUserById);
 router.post("/", createUser);
 router.put("/:id", updateUser);
