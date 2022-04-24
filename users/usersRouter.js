@@ -1,13 +1,12 @@
-const express = require("express");
-const router = express.Router();
+const router = require("express").Router();
 const {
-  getAllUsers,
-  getUserById,
-  updateUser,
-  deleteUser,
-  createUser,
-  loginUser,
-  verifyAccessToken
+    getAllUsers,
+    getUserById,
+    updateUser,
+    deleteUser,
+    createUser,
+    loginUser,
+    verifyAccessToken
 } = require("./usersController");
 
 router.get("/", verifyAccessToken, getAllUsers);

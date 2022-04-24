@@ -4,8 +4,8 @@
   "description": "API básica con Node y Express. Devuelve endpoints para los métodos GET, POST, PATCH y DELETE.",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server",
+    "dev": "nodemon server"    
   },
   "author": "Marcelo Bettini",
   "license": "ISC",
