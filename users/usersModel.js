@@ -10,6 +10,7 @@ const UserSchema = new Schema({
     password: { type: String, required: true },
 }, {
     timestamps: true, //created & updated At
+    // versionKey: false //elimina __v
 });
 
 //--------------------------------------

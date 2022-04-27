@@ -57,7 +57,7 @@ const createUser = async (req, res, next) => {
 //UPDATE USER
 const updateUser = async (req, res, next) => {
     try {
-        await User.findByIdAndUpdate(req.params.id, req.body); //recibe el id y los campos que deseo actualizar
+        await User.findByIdAndUpdate(req.params.id, req.body, { new: true }); //recibe el id y los campos que deseo actualizar devuelve el nuevo
         res.json({ message: "Usuario actualizado" });
     } catch (error) {
         res.status(404).next(error);
