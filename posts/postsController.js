@@ -15,7 +15,7 @@ const searchTitleByText = (req, res) => {
     const { query } = req.params
     Post.find({ $text: { $search: query } }, (err, result) => {
         if (err) return res.send(err)
-        if (result) return res.send(result)
+        return res.send(result)
     })
 }
 
